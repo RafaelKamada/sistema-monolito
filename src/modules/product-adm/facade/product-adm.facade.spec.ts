@@ -61,6 +61,7 @@ describe("ProductAdmFacade test", () => {
         await productFacade.addProduct(input);
 
         const result = await productFacade.checkStock({ productId: "1" });
+        
         expect(result.productId).toEqual("1");
         expect(result.stock).toEqual(10);
     });
