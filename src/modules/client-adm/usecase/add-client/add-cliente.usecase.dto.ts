@@ -1,11 +1,11 @@
-export interface AddClienteInputDto {
+export interface AddClientInputDto {
     id?: string,
     name: string,
     email: string,
     address: string,
 }
 
-export interface AddClienteOutputDto {
+export interface AddClientOutputDto {
     id: string,
     name: string,
     email: string,
