@@ -4,6 +4,8 @@ import ClientRepository from "../repository/client.repository";
 import AddClientUseCase from "../usecase/add-client/add-client.usecase";
 import ClientAdmFacade from "./client-adm.facade";
 import Id from "../../@shared/domain/value-object/id.value-object";
+import FindClientUseCase from "../usecase/find-client/find-client.usecase";
+import ClientAdmFacadeFactory from "../factory/client-adm.facade.factory";
 
 describe("ClientAdm facade unit test", () => {
     let sequelize: Sequelize;
@@ -25,13 +27,7 @@ describe("ClientAdm facade unit test", () => {
     });
     
     it("Should create a client", async () => {
-        const repository = new ClientRepository();
-        const addUseCase = new AddClientUseCase(repository);
-        const facade = new ClientAdmFacade({
-            addUseCase: addUseCase,
-            findUseCase: undefined,
-        });
-        
+        const facade = ClientAdmFacadeFactory.create();            
         const input = {
             id: "1",
             name: "Client 1",
@@ -44,6 +40,26 @@ describe("ClientAdm facade unit test", () => {
         const client = await ClientModel.findOne({ where: { id: "1" } });
         
         expect(client).toBeDefined();
+        expect(client.name).toBe(input.name);
+        expect(client.email).toBe(input.email);
+        expect(client.address).toBe(input.address);
+    });
+
+    it("Should find a client", async () => {
+        const facade = ClientAdmFacadeFactory.create();        
+        const input = {
+            id: "1",
+            name: "Client 1",
+            email: "x@x.com",
+            address: "Address 1",
+        };
+
+        await facade.add(input);
+        
+        const client = await facade.find({ id: "1" });
+        
+        expect(client).toBeDefined();
+        expect(client.id).toBe(input.id);
         expect(client.name).toBe(input.name);
         expect(client.email).toBe(input.email);
         expect(client.address).toBe(input.address);

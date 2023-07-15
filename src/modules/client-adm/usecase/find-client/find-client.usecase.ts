@@ -1,7 +1,7 @@
 import ClientGateway from "../../gateway/client.gateway";
 import { FindClientInputDto, FindClientOutputDto } from "./find-client.usecase.dto";
 
-export default class FindClienteUseCase {
+export default class FindClientUseCase {
     private _clientRepository: ClientGateway;
 
     constructor(clientRepository: ClientGateway) {
