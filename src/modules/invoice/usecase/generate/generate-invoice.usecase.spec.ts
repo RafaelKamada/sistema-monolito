@@ -2,7 +2,7 @@ import Address from "../../../@shared/domain/value-object/address.value-object";
 import Id from "../../../@shared/domain/value-object/id.value-object";
 import Invoice from "../../domain/invoice.entity";
 import Product from "../../domain/product.entity";
-import FindInvoiceUseCase from "./find-invoice.usecase";
+import GenerateInvoiceUseCase from "./generate-invoice.usecase";
 
 const product1 = new Product({
     id: new Id("1"),
@@ -33,33 +33,53 @@ const invoice = new Invoice({
 
 const MockRepository = () => {
     return {
-        find: jest.fn().mockReturnValue(Promise.resolve(invoice)),
-        generate: jest.fn(),
+        find: jest.fn(),
+        generate: jest.fn().mockReturnValue(Promise.resolve(invoice)),
     };
 };
 
-describe("Find invoice usecase unit test", () => {
+describe("Generate invoice usecase unit test", () => {
 
-    it("Should find an invoice", async () => {
+    it("Should create an invoice", async () => {
         const repository = MockRepository();
-        const usecase = new FindInvoiceUseCase(repository);
+        const usecase = new GenerateInvoiceUseCase(repository);
+
+        const item1 = {
+            id: "1",
+            name: "Product 1",
+            price: 10,
+        };
+        
+        const item2 = {
+            id: "2",
+            name: "Product 2",
+            price: 20,
+        };
 
         const input = {
-            id: "1",
+            name: "Invoice 1",
+            document: "Document 1",
+            street: "Street 1",
+            number: "1",
+            complement: "Complement 1",
+            city: "City 1",
+            state: "State 1",
+            zipCode: "123",
+            items: [ item1, item2 ],
         };
 
         const result = await usecase.execute(input);
 
-        expect(repository.find).toHaveBeenCalled();
-        expect(result.id).toBe("1");
+        expect(repository.generate).toHaveBeenCalled();
+        expect(result.id).toBeDefined();
         expect(result.name).toBe("Invoice 1");
         expect(result.document).toBe("Document 1");
-        expect(result.address.street).toBe("Street 1");
-        expect(result.address.number).toBe("1");
-        expect(result.address.complement).toBe("Complement 1");
-        expect(result.address.city).toBe("City 1");
-        expect(result.address.state).toBe("State 1");
-        expect(result.address.zipCode).toBe("123");
+        expect(result.street).toBe("Street 1");
+        expect(result.number).toBe("1");
+        expect(result.complement).toBe("Complement 1");
+        expect(result.city).toBe("City 1");
+        expect(result.state).toBe("State 1");
+        expect(result.zipCode).toBe("123");
         expect(result.items.length).toBe(2);
         expect(result.items[0].id).toBe("1");
         expect(result.items[0].name).toBe("Product 1");

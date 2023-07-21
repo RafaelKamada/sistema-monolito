@@ -5,7 +5,7 @@ import Id from "../../@shared/domain/value-object/id.value-object";
 import Product from "./product.entity";
 
 type InvoiceProps = {
-    id: Id,
+    id?: Id,
     name: string,
     document: string,
     address: Address,
