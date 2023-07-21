@@ -5,23 +5,23 @@ import TransactionModel from "./transaction.model";
 import TransactionRepostiory from "./transaction.repository";
 
 describe("TransactionRepository test", () => {
-  let sequelize: Sequelize;
+    let sequelize: Sequelize;
 
-  beforeEach(async () => {
-    sequelize = new Sequelize({
-      dialect: "sqlite",
-      storage: ":memory:",
-      logging: false,
-      sync: { force: true },
+    beforeEach(async () => {
+        sequelize = new Sequelize({
+        dialect: "sqlite",
+        storage: ":memory:",
+        logging: false,
+        sync: { force: true },
+        });
+
+        await sequelize.addModels([TransactionModel]);
+        await sequelize.sync();
     });
 
-    await sequelize.addModels([TransactionModel]);
-    await sequelize.sync();
-  });
-
-  afterEach(async () => {
-    await sequelize.close();
-  });
+    afterEach(async () => {
+        await sequelize.close();
+    });
 
   it("should save a transaction", async () => {
     const transaction = new Transaction({
