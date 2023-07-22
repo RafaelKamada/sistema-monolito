@@ -46,8 +46,21 @@ export default class InvoiceRepository implements InvoiceGateway {
         });
     }
 
-    generate(input: Invoice): Promise<void> {
-        throw new Error("Method not implemented.");
+    async generate(input: Invoice): Promise<void> {
+        await InvoiceModel.create({
+            id: input.id.id,
+            name: input.name,
+            document: input.document,
+            street: input.address.street,
+            number: input.address.number,
+            complement: input.address.complement,
+            city: input.address.city,
+            state: input.address.state,
+            zipCode: input.address.zipCode,
+            items: input.items,
+            createdAt: input.createdAt,
+            updatedAt: input.updatedAt,
+        });
     }
 
 }
