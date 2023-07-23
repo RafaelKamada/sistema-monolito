@@ -93,4 +93,60 @@ describe("Invoice facade unit test", () => {
         expect(itensInvoice[1].name).toBe(product2.name);
         expect(itensInvoice[1].price).toBe(product2.price);
     });
+
+
+    it("Should find an invoice", async () => {
+        const facade = InvoiceFacadeFactory.create();
+        
+        const product1 = {
+            id: "1",
+            name: "Product 1",
+            price: 10,
+        };
+       
+        const product2 = {
+            id: "2",
+            name: "Product 2",
+            price: 20,
+        };
+
+        const items = [product1, product2].map((item) => ({
+            id: new Id(item.id),
+            name: item.name,
+            price: item.price,
+        }));
+        
+        const invoice = await InvoiceModel.create({
+            id: "1",
+            name: "John Doe",
+            document: "12345",
+            street: "Street 1",
+            number: "1",
+            complement: "Complement 1",
+            city: "City 1",
+            state: "State 1",
+            zipCode: "123",
+            items: items,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        });
+
+        const result = await facade.find({ id: "1" });
+        
+        expect(invoice).toBeDefined();
+        expect(invoice.id).toBe(result.id);
+        expect(invoice.name).toEqual(result.name);
+        expect(invoice.document).toEqual(result.document);
+        expect(invoice.street).toBe(result.address.street);
+        expect(invoice.number).toBe(result.address.number);
+        expect(invoice.complement).toBe(result.address.complement);
+        expect(invoice.city).toBe(result.address.city);
+        expect(invoice.state).toBe(result.address.state);
+        expect(invoice.zipCode).toBe(result.address.zipCode);
+        expect(invoice.items.length).toBe(2);
+        expect(product1.name).toBe(result.items[0].name);
+        expect(product1.price).toBe(result.items[0].price);
+        expect(product2.name).toBe(result.items[1].name);
+        expect(product2.price).toBe(result.items[1].price);
+    });
 });
