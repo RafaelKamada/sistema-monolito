@@ -25,4 +25,13 @@ export default class Product extends BaseEntity implements AggregateRoot {
     get price(): number {
         return this._price;
     }
+
+    static fromJson(json: string): ProductProps {
+        const data = JSON.parse(json);
+        return new Product({
+            id: data._id,
+            name: data._name,
+            price: data._price,
+        });
+      }
 }

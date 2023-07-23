@@ -134,26 +134,26 @@ describe("Invoice repository unit test", () => {
             where: { id: invoice.id.id },
         });
 
-        const itensDb: Product[] = invoiceDb.items.map((item: ProductProps) => {
-            return new Product({ id: item.id, name: item.name, price: item.price });
+        const itensDb = invoiceDb.items.map((item) => {
+            return (Product.fromJson(JSON.stringify(item)));
         });
         
-        expect(invoice.id.id).toEqual(invoiceDb.id);
-        expect(invoice.name).toEqual(invoiceDb.name);
-        expect(invoice.document).toEqual(invoiceDb.document);
-        expect(invoice.address.street).toBe(invoiceDb.street);
-        expect(invoice.address.number).toBe(invoiceDb.number);
-        expect(invoice.address.complement).toBe(invoiceDb.complement);
-        expect(invoice.address.city).toBe(invoiceDb.city);
-        expect(invoice.address.state).toBe(invoiceDb.state);
-        expect(invoice.address.zipCode).toBe(invoiceDb.zipCode);
+        expect(props.id.id).toEqual(invoiceDb.id);
+        expect(props.name).toEqual(invoiceDb.name);
+        expect(props.document).toEqual(invoiceDb.document);
+        expect(props.address.street).toBe(invoiceDb.street);
+        expect(props.address.number).toBe(invoiceDb.number);
+        expect(props.address.complement).toBe(invoiceDb.complement);
+        expect(props.address.city).toBe(invoiceDb.city);
+        expect(props.address.state).toBe(invoiceDb.state);
+        expect(props.address.zipCode).toBe(invoiceDb.zipCode);
         expect(itensDb.length).toBe(2);
         expect(itensDb[0].id).toBeDefined();
-        expect(itensDb[0].name).toBe(invoiceDb.items[0].name);
-        expect(itensDb[0].price).toBe(invoiceDb.items[0].price);
+        expect(props.items[0].name).toBe(itensDb[0].name);
+        expect(props.items[0].price).toBe(itensDb[0].price);
         expect(itensDb[1].id).toBeDefined();
-        expect(itensDb[1].name).toBe(invoiceDb.items[1].name);
-        expect(itensDb[1].price).toBe(invoiceDb.items[1].price);
+        expect(props.items[1].name).toBe(itensDb[1].name);
+        expect(props.items[1].price).toBe(itensDb[1].price);
         expect(invoice.total).toBe(30);
     });
 });
