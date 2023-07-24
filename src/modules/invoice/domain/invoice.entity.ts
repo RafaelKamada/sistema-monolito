@@ -45,10 +45,8 @@ export default class Invoice extends BaseEntity implements AggregateRoot {
     }
 
     get total(): number {
-        let total = 0;
-        for (const product of this._items) {
-            total += product.price;
-        }
-        return total;
+        return this._items.reduce((total, product) => {
+            return total + product.price;
+        }, 0);
     }
 }
