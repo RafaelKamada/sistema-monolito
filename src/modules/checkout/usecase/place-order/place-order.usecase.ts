@@ -5,6 +5,8 @@ import Product from "../../domain/product.entity";
 import { PlaceOrderInputDto, PlaceOrderOutputDto } from "./place-order.dto";
 import StoreCatalogFacadeInterface from "../../../store-catalog/facade/store-catalog.facade.interface";
 import Id from "../../../@shared/domain/value-object/id.value-object";
+import Client from "../../domain/client.entity";
+import Order from "../../domain/order.entity";
 
 export default class PlaceOrderUseCase implements UseCaseInterface {
     private _clientFacade: ClientAdmFacadeInterface;
@@ -28,9 +30,23 @@ export default class PlaceOrderUseCase implements UseCaseInterface {
         await this.validateProducts(input);
 
         // recuperar os products.
+        const products = await Promise.all(
+            input.products.map((p) => this.getProduct(p.productId))
+        );
 
         // criar o objeto do client.
+        const myClient = new Client({
+            id: new Id(client.id),
+            name: client.name,
+            email: client.email,
+            address: client.address,
+        });
+
         // criar o objeto da order (client, products).
+        const order = new Order({
+            client: myClient,
+            products,
+        });
         
         // processpayment -> paymentfacade.process (orderId, amount).
 
