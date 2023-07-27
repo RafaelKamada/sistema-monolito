@@ -7,16 +7,27 @@ import StoreCatalogFacadeInterface from "../../../store-catalog/facade/store-cat
 import Id from "../../../@shared/domain/value-object/id.value-object";
 import Client from "../../domain/client.entity";
 import Order from "../../domain/order.entity";
+import CheckoutGateway from "../../gateway/checkout.gateway";
+import InvoiceFacadeInterface from '../../../invoice/facade/invoice.facade.interface';
+import PaymentFacadeInterface from '../../../payment/facade/facade.interface';
+import { or } from "sequelize";
 
 export default class PlaceOrderUseCase implements UseCaseInterface {
     private _clientFacade: ClientAdmFacadeInterface;
     private _productFacade: ProductAdmFacadeInterface;
     private _catalogFacade: StoreCatalogFacadeInterface;
+    private _repository: CheckoutGateway;
+    private _invoiceFacade: InvoiceFacadeInterface;
+    private _paymentFacade: PaymentFacadeInterface;
 
-    constructor(clientFacade: ClientAdmFacadeInterface, productFacade: ProductAdmFacadeInterface, catalogFacade: StoreCatalogFacadeInterface) {
+    constructor(clientFacade: ClientAdmFacadeInterface, productFacade: ProductAdmFacadeInterface, catalogFacade: StoreCatalogFacadeInterface,
+                repository: CheckoutGateway, invoiceFacade: InvoiceFacadeInterface, paymentFacade: PaymentFacadeInterface) {
         this._clientFacade = clientFacade;
         this._productFacade = productFacade;
         this._catalogFacade = catalogFacade;
+        this._repository = repository;
+        this._invoiceFacade = invoiceFacade;
+        this._paymentFacade = paymentFacade;
     }
 
     async execute(input: PlaceOrderInputDto): Promise<PlaceOrderOutputDto> {
@@ -39,7 +50,7 @@ export default class PlaceOrderUseCase implements UseCaseInterface {
             id: new Id(client.id),
             name: client.name,
             email: client.email,
-            address: client.address,
+            address: client.street,
         });
 
         // criar o objeto da order (client, products).
@@ -49,18 +60,49 @@ export default class PlaceOrderUseCase implements UseCaseInterface {
         });
         
         // processpayment -> paymentfacade.process (orderId, amount).
+        const payment = await this._paymentFacade.process({
+            orderId: order.id.id,
+            amount: order.total,
+        });
 
         //caso o pagamento seja aprovado. -> Gerar invoice.
+        const invoice =
+            payment.status === "approved" ?
+                await this._invoiceFacade.generate({
+                    name: client.name,
+                    document: client.document,
+                    street: client.street,
+                    complement: client.complement,
+                    number: client.number,
+                    state: client.state,
+                    city: client.city,
+                    zipCode: client.zipCode,
+                    items: products.map((p) => {
+                        return {
+                            id: p.id.id,
+                            name: p.name,
+                            price: p.salesPrice,
+                        };
+                    }),
+                })
+                : null;
+
+        
         // mudar o status da minha order para "approved".
-        // returnar dto.
+        payment.status === "approved" && order.approved();
+        this._repository.addOrder(order);
 
-
+        // retornar dto.
         return {
-            id: "",
-            invoiceId: "",
-            status: "",
-            total: 0,
-            products: [],
+            id: order.id.id,
+            invoiceId: payment.status === "approved" ? invoice.id: null,
+            status: order.status,
+            total: order.total,
+            products: order.products.map((p) => {
+                return {
+                    productId: p.id.id,
+                };
+            }),
         };
     }    
 

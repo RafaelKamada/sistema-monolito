@@ -32,7 +32,13 @@ describe("ClientAdm facade unit test", () => {
             id: "1",
             name: "Client 1",
             email: "x@x.com",
-            address: "Address 1",
+            document: "12345",
+            street: "Street 1",
+            number: "1",
+            complement: "Complement 1",
+            city: "City 1",
+            state: "State 1",
+            zipCode: "123",
         };
 
         await facade.add(input);
@@ -42,7 +48,13 @@ describe("ClientAdm facade unit test", () => {
         expect(client).toBeDefined();
         expect(client.name).toBe(input.name);
         expect(client.email).toBe(input.email);
-        expect(client.address).toBe(input.address);
+        expect(client.document).toBe(input.document);
+        expect(client.street).toBe(input.street);
+        expect(client.number).toBe(input.number);
+        expect(client.complement).toBe(input.complement);
+        expect(client.city).toBe(input.city);
+        expect(client.state).toBe(input.state);
+        expect(client.zipCode).toBe(input.zipCode);
     });
 
     it("Should find a client", async () => {
@@ -51,7 +63,13 @@ describe("ClientAdm facade unit test", () => {
             id: "1",
             name: "Client 1",
             email: "x@x.com",
-            address: "Address 1",
+            document: "12345",
+            street: "Street 1",
+            number: "1",
+            complement: "Complement 1",
+            city: "City 1",
+            state: "State 1",
+            zipCode: "123",
         };
 
         await facade.add(input);
@@ -62,6 +80,12 @@ describe("ClientAdm facade unit test", () => {
         expect(client.id).toBe(input.id);
         expect(client.name).toBe(input.name);
         expect(client.email).toBe(input.email);
-        expect(client.address).toBe(input.address);
+        expect(client.document).toBe(input.document);
+        expect(client.street).toBe(input.street);
+        expect(client.number).toBe(input.number);
+        expect(client.complement).toBe(input.complement);
+        expect(client.city).toBe(input.city);
+        expect(client.state).toBe(input.state);
+        expect(client.zipCode).toBe(input.zipCode);
     });
 });
