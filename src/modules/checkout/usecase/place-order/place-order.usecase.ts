@@ -10,7 +10,6 @@ import Order from "../../domain/order.entity";
 import CheckoutGateway from "../../gateway/checkout.gateway";
 import InvoiceFacadeInterface from '../../../invoice/facade/invoice.facade.interface';
 import PaymentFacadeInterface from '../../../payment/facade/facade.interface';
-import { or } from "sequelize";
 
 export default class PlaceOrderUseCase implements UseCaseInterface {
     private _clientFacade: ClientAdmFacadeInterface;
