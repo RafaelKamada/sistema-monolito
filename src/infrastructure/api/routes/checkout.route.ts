@@ -6,11 +6,14 @@ import StoreCatalogFacadeFactory from '../../../modules/store-catalog/factory/fa
 import InvoiceFacadeFactory from "../../../modules/invoice/factory/facade.factory";
 import PaymentFacadeFactory from "../../../modules/payment/factory/facade.factory";
 import PlaceOrderRepository from "../../../modules/checkout/repository/checkout.repository";
+import CheckoutFacadeFactory from "../../../modules/checkout/factory/checkout.facade.factory";
 
 export const checkoutRoute = express.Router();
 
 checkoutRoute.post('/', async (req: Request, res: Response) => {
     try {        
+        const facade = CheckoutFacadeFactory.create();
+
         const usecase = new PlaceOrderUseCase(
             ClientAdmFacadeFactory.create(),
             ProductAdmFacadeFactory.create(),
@@ -21,10 +24,11 @@ checkoutRoute.post('/', async (req: Request, res: Response) => {
         
         const checkoutDto = {
             clientId: req.body.clientId,
-            products: req.body.produtcs,
+            products: req.body.products,
         };
         
-        const output = await usecase.execute(checkoutDto);
+        //const output = await usecase.execute(checkoutDto);
+        const output = await facade.placeOrder(checkoutDto);
         res.send(output);
     } catch (err) {
         res.status(500).send(err);
