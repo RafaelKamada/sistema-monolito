@@ -14,13 +14,13 @@ checkoutRoute.post('/', async (req: Request, res: Response) => {
     try {        
         const facade = CheckoutFacadeFactory.create();
 
-        const usecase = new PlaceOrderUseCase(
-            ClientAdmFacadeFactory.create(),
-            ProductAdmFacadeFactory.create(),
-            StoreCatalogFacadeFactory.create(),
-            new PlaceOrderRepository(),
-            InvoiceFacadeFactory.create(),
-            PaymentFacadeFactory.create());
+        // const usecase = new PlaceOrderUseCase(
+        //     ClientAdmFacadeFactory.create(),
+        //     ProductAdmFacadeFactory.create(),
+        //     StoreCatalogFacadeFactory.create(),
+        //     new PlaceOrderRepository(),
+        //     InvoiceFacadeFactory.create(),
+        //     PaymentFacadeFactory.create());
         
         const checkoutDto = {
             clientId: req.body.clientId,
@@ -31,6 +31,9 @@ checkoutRoute.post('/', async (req: Request, res: Response) => {
         const output = await facade.placeOrder(checkoutDto);
         res.send(output);
     } catch (err) {
+        console.log("---------------------checkoutRoute------------------------");
+        console.log(err);
+
         res.status(500).send(err);
     }
 });

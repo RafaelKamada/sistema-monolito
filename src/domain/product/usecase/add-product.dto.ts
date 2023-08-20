@@ -2,12 +2,12 @@ export interface AddProductInputDto {
     id: string;
     name: string;
     description: string;
-    salePrice: number;
+    salesPrice: number;
 }
 
 export interface AddProductOutputDto {
     id: string;
     name: string;
     description: string;
-    salePrice: number;
+    salesPrice: number;
 }

@@ -16,10 +16,10 @@ export default class AddProductUseCase {
             id: input.id,
             name: input.name,
             description: input.description,
-            salePrice: input.salePrice
+            salesPrice: input.salesPrice
         };
 
-        const product = new Product(props.id, props.name, props.description, props.salePrice);
+        const product = new Product(props.id, props.name, props.description, props.salesPrice);
 
         await this.productRepository.create(product);
 
@@ -27,7 +27,7 @@ export default class AddProductUseCase {
             id: product.id,
             name: product.name,
             description: product.description,
-            salePrice: product.salePrice
+            salesPrice: product.salesPrice
         };
     }
 }

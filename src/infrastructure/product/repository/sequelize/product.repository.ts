@@ -9,7 +9,7 @@ export default class ProductRepository implements ProductRepositoryInterface {
             id: entity.id,
             name: entity.name,
             description: entity.description,
-            salePrice: entity.salePrice
+            salesPrice: entity.salesPrice
         });
     }
 }

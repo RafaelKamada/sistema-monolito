@@ -89,7 +89,7 @@ export default class PlaceOrderUseCase implements UseCaseInterface {
         
         // mudar o status da minha order para "approved".
         payment.status === "approved" && order.approved();
-        this._repository.addOrder(order);
+        await this._repository.addOrder(order);    
 
         // retornar dto.
         return {

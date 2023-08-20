@@ -40,6 +40,13 @@ describe("Products tests", () => {
     });
     it("should create product registration", async () => {
 
+        await ProductModel.create({
+            id: "12",
+            name: "Product 1",
+            description: "product.description",
+            salesPrice: 11,
+        });
+
         const response = await request(app).post("/product-registration").send({
             id: "1",
             name: "DDD",
@@ -59,12 +66,12 @@ describe("Products tests", () => {
             id: "2",
             name: "DDD",
             description: "Domain Driven Design",
-            salePrice: 59.90
+            salesPrice: 59.90
         });
 
         expect(response.status).toBe(200);
         expect(response.body.name).toBe("DDD");
         expect(response.body.description).toBe("Domain Driven Design");
-        expect(response.body.salePrice).toBe(59.90);
+        expect(response.body.salesPrice).toBe(59.90);
     });
 });

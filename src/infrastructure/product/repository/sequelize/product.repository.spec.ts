@@ -29,11 +29,11 @@ describe("Product repository tests", () => {
             id: "1",
             name: "DDD",
             description: "Domain Driven Design",
-            salePrice: 69.90
+            salesPrice: 69.90
         };
 
         const productRepository = new ProductRepository();
-        const product = new Product(input.id, input.name, input.description, input.salePrice);
+        const product = new Product(input.id, input.name, input.description, input.salesPrice);
 
         await productRepository.create(product);
 
@@ -45,7 +45,7 @@ describe("Product repository tests", () => {
             id: input.id,
             name: input.name,
             description: input.description,
-            salePrice: input.salePrice
+            salesPrice: input.salesPrice
         });
     });
 });

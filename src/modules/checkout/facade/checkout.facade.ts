@@ -1,5 +1,5 @@
 import PlaceOrderUseCase from "../usecase/place-order/place-order.usecase";
-import { PlaceOrderFacadeInputDto, FindOrderFacadeInputDto, FindOrderFacadeOutputDto } from "./checkout.facade.dto";
+import { PlaceOrderFacadeInputDto, FindOrderFacadeInputDto, FindOrderFacadeOutputDto, PlaceOrderFacadeOutputDto } from "./checkout.facade.dto";
 import CheckoutFacadeInterface from "./checkout.facade.interface";
 
 export interface UseCaseProps {
@@ -17,8 +17,8 @@ export default class CheckoutFacade implements CheckoutFacadeInterface {
         this._findOrderUseCase = props.findOrderUseCase;
     }
     
-    async placeOrder(input: PlaceOrderFacadeInputDto): Promise<void> {
-        await this._placeOrderUseCase.execute(input);
+    async placeOrder(input: PlaceOrderFacadeInputDto): Promise<PlaceOrderFacadeOutputDto> {
+        return await this._placeOrderUseCase.execute(input);
     }
 
     async findOrder(input: FindOrderFacadeInputDto): Promise<FindOrderFacadeOutputDto> {

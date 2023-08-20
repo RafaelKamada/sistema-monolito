@@ -5,14 +5,14 @@ export default class Product implements ProductInterface {
     private _id: string;
     private _name: string;
     private _description: string;
-    private _salePrice: number;
+    private _salesPrice: number;
 
-    constructor(id: string ,name: string, description: string ,salePrice: number) {
+    constructor(id: string ,name: string, description: string ,salesPrice: number) {
 
         this._id = id;
         this._name = name;
         this._description = description;
-        this._salePrice = salePrice;
+        this._salesPrice = salesPrice;
         this.validate();
     }
 
@@ -28,8 +28,8 @@ export default class Product implements ProductInterface {
         return this._description;
     }
 
-    get salePrice(): number {
-        return this._salePrice;
+    get salesPrice(): number {
+        return this._salesPrice;
     }
 
     validate(): boolean {
@@ -45,7 +45,7 @@ export default class Product implements ProductInterface {
             throw new Error("Description is required");
         }
 
-        if (this._salePrice === 0) {
+        if (this._salesPrice === 0) {
             throw new Error("Sale Price cannot be zero");
         }
 

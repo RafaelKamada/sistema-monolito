@@ -36,7 +36,7 @@ productRoute.post("/", async (req: Request, res: Response) => {
             id: req.body.id,
             name: req.body.name,
             description: req.body.description,
-            salePrice: req.body.salePrice
+            salesPrice: req.body.salesPrice
         };
 
         const output = await usecase.execute(productDto);
