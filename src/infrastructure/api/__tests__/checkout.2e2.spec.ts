@@ -10,8 +10,6 @@ import request from "supertest";
 import { Umzug } from "umzug"
 import { migrator } from "../../../test-migrations/config-migrations/migrator";
 import ProductModelStorage from "../../../modules/store-catalog/repository/product.model";
-import ClientAdmFacade from "../../../modules/client-adm/facade/client-adm.facade";
-import ClientAdmFacadeFactory from "../../../modules/client-adm/factory/client-adm.facade.factory";
 import CheckoutModel from "../../../modules/checkout/repository/checkout.model";
 
 describe("E2E test for checkout", () => {
@@ -23,8 +21,8 @@ describe("E2E test for checkout", () => {
     beforeEach(async () => {
         sequelize = new Sequelize({
             dialect: 'sqlite',
-            //storage: ":memory:",
-            storage: "sequelize",
+            storage: ":memory:",
+            //storage: "sequelize",
             logging: false
         });
         sequelize.addModels([ClientModel, ProductModelAdm, ProductModelStorage, CheckoutModel]);
@@ -129,14 +127,6 @@ describe("E2E test for checkout", () => {
                 clientId: "1",
                 products: [{productId: "1"}, {productId: "2"}],
             });
-
-        if (response.status != 200) {
-            console.log("---------------------error------------------------");
-            console.log(response.error);
-        }
-        else {
-            console.log(response.body);
-        }
     
         expect(response.status).toBe(200);
         expect(response.body.id).toBeDefined();
