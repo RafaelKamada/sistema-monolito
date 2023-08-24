@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import ProductAdmFacadeFactory from "../../../modules/product-adm/factory/facade.factory";
 import { AddProductFacadeOutputDto } from "../../../modules/product-adm/facade/product-adm.facade.dto";
+import ProductModelStorage from "../../../modules/store-catalog/repository/product.model";
 
 export const productsRoute = express.Router();
 
@@ -21,6 +22,13 @@ productsRoute.post('/', async (req: Request, res: Response) => {
             };
 
             output.push(await facade.addProduct(productDto));
+
+            const prod = await ProductModelStorage.findByPk(product.id);
+            if (prod) {
+                prod.salesPrice = product.salesPrice;
+                prod.updatedAt = new Date();
+                await prod.save();
+            }
         }));
         
         res.send(output);

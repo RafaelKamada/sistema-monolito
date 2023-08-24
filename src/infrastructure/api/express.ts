@@ -7,12 +7,14 @@ import ProductModel from "../../modules/store-catalog/repository/product.model";
 import { clientRoute } from "./routes/client.route";
 import { checkoutRoute } from "./routes/checkout.route";
 import { productsRoute } from "./routes/products.route";
+import { invoiceRoute } from "./routes/invoice.route";
 
 export const app: Express = express();
 app.use(express.json());
 app.use("/clients", clientRoute);
 app.use("/checkout", checkoutRoute);
 app.use("/products", productsRoute);
+app.use("/invoice", invoiceRoute);
 
 export let sequelize: Sequelize;
 

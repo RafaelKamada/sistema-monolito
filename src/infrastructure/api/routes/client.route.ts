@@ -7,6 +7,7 @@ clientRoute.post('/', async (req: Request, res: Response) => {
     const facade = ClientAdmFacadeFactory.create();
     try {
         const clinetDto = {
+            id: req.body.id,
             name: req.body.name,
             email: req.body.email,
             document: req.body.document,

@@ -86,10 +86,10 @@ describe("Invoice facade unit test", () => {
         expect(invoice.state).toBe(input.state);
         expect(invoice.zipCode).toBe(input.zipCode);
         expect(itensInvoice.length).toBe(2);
-        expect(itensInvoice[0].id).toBeDefined();
+        expect(itensInvoice[0].id.id).toBeDefined();
         expect(itensInvoice[0].name).toBe(product1.name);
         expect(itensInvoice[0].price).toBe(product1.price);
-        expect(itensInvoice[1].id).toBeDefined();
+        expect(itensInvoice[1].id.id).toBeDefined();
         expect(itensInvoice[1].name).toBe(product2.name);
         expect(itensInvoice[1].price).toBe(product2.price);
     });

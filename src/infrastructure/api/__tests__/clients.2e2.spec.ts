@@ -14,6 +14,7 @@ describe("E2E test for client", () => {
     const response = await request(app)
       .post("/clients")
       .send({
+        id: "1",
         name: "Client 1",
         email: "e@e.com",
         document: "Document 1",
@@ -26,6 +27,7 @@ describe("E2E test for client", () => {
       });
     
     expect(response.status).toBe(200);
+    expect(response.body.id).toBe("1");
     expect(response.body.name).toBe("Client 1");
     expect(response.body.email).toBe("e@e.com");
     expect(response.body.document).toBe("Document 1");

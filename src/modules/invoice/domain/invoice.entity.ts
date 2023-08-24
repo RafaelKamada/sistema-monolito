@@ -49,4 +49,28 @@ export default class Invoice extends BaseEntity implements AggregateRoot {
             return total + product.price;
         }, 0);
     }
+
+    static fromJson(json: string): Invoice {
+        const data = JSON.parse(json);
+        return new Invoice({
+            id: data.id,
+            name: data.name,
+            document: data.document,
+            address: new Address(
+                data.address._street,
+                data.address._number,
+                data.address._complement,
+                data.address._city,
+                data.address._state,
+                data.address._zipCode
+            ),
+            items: data.items.map((item: Product) => {
+                return new Product({
+                    id: item.id,
+                    name: item.name,
+                    price: item.price,
+                });
+            }),
+        });
+    }
 }

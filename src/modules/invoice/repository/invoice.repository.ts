@@ -31,9 +31,21 @@ export default class InvoiceRepository implements InvoiceGateway {
             invoice.zipCode,
         );
 
-        const itens: Product[] = invoice.items.map((item: ProductProps) => {
-            return new Product({ id: item.id, name: item.name, price: item.price });
+        // let itens: Product[] = invoice.items.map((item) => {
+        //     return new Product({ id: item.id, name: item.name, price: item.price });
+        // });
+
+        let itens: Product[] = [];
+        invoice.items.forEach(item => {
+            itens.push(new Product(Product.fromJson(JSON.stringify(item))));
         });
+        // if (itens[0].name == undefined) {
+        //     itens.splice(0, itens.length);
+            
+        //     invoice.items.forEach(item => {
+        //         itens.push(new Product(Product.fromJson(JSON.stringify(item))));
+        //     });
+        // }        
 
         return new Invoice({
             id: new Id(invoice.id),
